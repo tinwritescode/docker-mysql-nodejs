@@ -1,0 +1,83 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Blah",
+    "description": "",
+    "version": "1.0"
+  },
+  "produces": ["application/json"],
+  "paths": {
+    "/test": {
+      "post": {
+        "x-swagger-router-controller": "home",
+        "operationId": "index",
+        "tags": ["/test"],
+        "description": "[Login 123](https://www.google.com)",
+        "parameters": [
+          {
+            "name": "test",
+            "in": "formData",
+            "type": "array",
+            "collectionFormat": "multi",
+            "items": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "profileId",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "required": "true"
+          }
+        ],
+        "responses": {}
+      }
+    },
+
+    "/actors": {
+      "get": {
+        "x-swagger-router-controller": "actors",
+        "operationId": "getActors",
+        "tags": ["/test"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Actor"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Actor": {
+      "type": "object",
+      "properties": {
+        "actor_id": {
+          "type": "integer"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "last_update": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
