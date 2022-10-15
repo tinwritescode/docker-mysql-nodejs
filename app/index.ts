@@ -1,14 +1,13 @@
-import { BaseResponseBody } from './base/types/baseResponse'
-import express, { Response } from 'express'
 import dotenv from 'dotenv'
+dotenv.config()
+import { BaseResponse } from './base/types/baseResponse'
+import { specs } from './middleware/swagger.middleware'
+import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import swaggerUi from 'swagger-ui-express'
 import actorRoute from './route/actor.route'
 import path from 'path'
-const swaggerJson = require('../swagger.json')
-
-dotenv.config()
 
 const app = express()
 app.use(cors())
@@ -20,9 +19,12 @@ app.get('/', (_, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, 'public') })
 })
 app.use('/actors', actorRoute)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJson))
-
-app.use((_, res: Response<BaseResponseBody>) => {
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true }),
+)
+app.use((_, res: BaseResponse) => {
   res.status(404).json({ ok: false, message: 'Not Found', data: null })
 })
 

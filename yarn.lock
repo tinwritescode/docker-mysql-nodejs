@@ -1007,7 +1007,7 @@ supports-preserve-symlinks-flag@^1.0.0:
 
 swagger-jsdoc@^6.2.5:
   version "6.2.5"
-  resolved "https://registry.npmjs.org/swagger-jsdoc/-/swagger-jsdoc-6.2.5.tgz"
+  resolved "https://registry.yarnpkg.com/swagger-jsdoc/-/swagger-jsdoc-6.2.5.tgz#65bffa142276436b2b131255f59a6b55384a0e8e"
   integrity sha512-l+cdsKS2y+QDhrH1TJSUiE0y9XKuf5xaGSatjf0hR/wjTlMpO8WfubBK9d/nASdbHPMtj9iJZLBH2ogBEhL7Sw==
   dependencies:
     commander "6.2.0"

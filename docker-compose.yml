@@ -17,22 +17,22 @@ services:
     networks: 
       - nodejss
 
-  web:
-    depends_on:
-      - mysql
-    build: ./
-    ports: 
-     - "3000:3000"
-    # volumes:
-    #  - ./:/app
-    environment:
-      DATABASE_URL: "mysql://root:123456@mysql-nodejs/nodejs"
-    restart: unless-stopped
-    container_name: nodejs
-    stdin_open: true
-    tty: true
-    networks: 
-      - nodejss
+  # web:
+  #   depends_on:
+  #     - mysql
+  #   build: ./
+  #   ports: 
+  #    - "3000:3000"
+  #   # volumes:
+  #   #  - ./:/app
+  #   environment:
+  #     DATABASE_URL: "mysql://root:123456@mysql-nodejs/nodejs"
+  #   restart: unless-stopped
+  #   container_name: nodejs
+  #   stdin_open: true
+  #   tty: true
+  #   networks: 
+  #     - nodejss
 
 volumes:
   db:

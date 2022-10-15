@@ -1,5 +1,5 @@
 import { BaseResponse } from './../base/types/baseResponse'
-import { Response, Request } from 'express'
+import { Request } from 'express'
 import { prisma } from '../lib/prisma'
 
 export const getActor = async (_: Request, res: BaseResponse) => {
