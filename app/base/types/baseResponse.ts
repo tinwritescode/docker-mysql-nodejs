@@ -5,3 +5,5 @@ export interface BaseResponseBody {
   data?: any
   ok: boolean
 }
+
+export type BaseResponse = Response<BaseResponseBody>
