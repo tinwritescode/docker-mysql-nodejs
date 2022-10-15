@@ -1,10 +1,18 @@
 # Các bước bắt đầu
 
+- [Các bước bắt đầu](#các-bước-bắt-đầu)
+  - [1. MySQL](#1-mysql)
+  - [2. Chạy App](#2-chạy-app)
+    - [Production](#production)
+    - [Development](#development)
+  - [3. Swagger](#3-swagger)
+
 ## 1. MySQL
 
 ```jsx
-docker-compose up
+docker-compose up --force-recreate --build -d
 ```
+
 Chạy MySQL
 
 Mở navicat và execute file `prisma/sakila-mysql.sql`

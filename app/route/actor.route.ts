@@ -1,13 +1,14 @@
-import { validate } from './../validation/index'
-import { Router } from 'express'
+import { validate } from '../validation/index'
+import { Router, Response } from 'express'
 import { prisma } from '../lib/prisma'
 import { postActorValidation } from '../validation/actor.validation'
+import { BaseResponseBody } from '../base/types/baseResponse'
 
 const router = Router()
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res: Response<BaseResponseBody>) => {
   const actors = await prisma.actor.findMany()
-  res.json(actors)
+  res.json({ ok: true, data: actors })
 })
 
 router.post('/', validate(postActorValidation), async (req, res) => {
