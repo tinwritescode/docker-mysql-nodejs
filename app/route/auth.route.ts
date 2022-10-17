@@ -32,6 +32,11 @@ router.get(
   passport.authenticate('facebook', { scope: ['email', 'public_profile'] }),
   getLoginFacebook,
 )
+router.get(
+  '/facebook/token/callback',
+  passport.authenticate('facebook-token'),
+  getLoginFacebook,
+)
 
 /**
  * @swagger
@@ -137,6 +142,63 @@ router.get(
  *                 type: string
  *                 required: false
  *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ok:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     token:
+ *                       type: string
+ */
+
+/**
+ * @swagger
+ * /auth/facebook/callback:
+ *   get:
+ *     summary: Login with facebook callback
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ok:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     token:
+ *                       type: string
+ */
+
+/**
+ * @swagger
+ * /auth/facebook/token/callback:
+ *   get:
+ *     summary: Login with facebook token callback
+ *     tags: [Auth]
+ *   parameters:
+ *     - in: query
+ *       name: access_token
+ *       schema:
+ *         type: string
+ *       required: true
+ *       description: The access token
+ *   responses:
  *       200:
  *         description: Success
  *         content:

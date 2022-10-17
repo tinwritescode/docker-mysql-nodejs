@@ -1,6 +1,5 @@
 import {
   createUserWithEmail,
-  defaultUserFields,
   getUserByEmail,
   getUserById,
   updateUserById,
@@ -58,6 +57,11 @@ const facebookTokenStrategy = new FacebookTokenStrategy(
 
       const newUser = await createUserWithEmail(email)
 
+      await updateUserById(newUser.id, {
+        facebookId: profile.id,
+        name: profile.displayName,
+      })
+
       return done(null, newUser)
     }
 
@@ -71,12 +75,12 @@ passport.serializeUser((user: User, done) => {
 })
 
 passport.deserializeUser(async (id, done) => {
-  const user = await getUserById(id, defaultUserFields)
+  const user = await getUserById(id)
 
   done(null, user)
 })
 
-passport.use(facebookStrategy)
-passport.use(facebookTokenStrategy)
+passport.use('facebook', facebookStrategy)
+passport.use('facebook-token', facebookTokenStrategy)
 
 export default passport

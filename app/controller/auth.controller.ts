@@ -3,6 +3,7 @@ import {
   deleteUserById,
   getUserByEmail,
   getUserById,
+  defaultUserFields,
 } from './../service/user.service'
 import tokenService, {
   generateAuthTokens,
@@ -119,7 +120,7 @@ export const postVerifyEmail = catchAsync(
 export const getLoginFacebook = catchAsync(
   async (req: Request, res: BaseResponse) => {
     //@ts-ignore
-    const user = await getUserById(req.user.id)
+    const user = await getUserById(req.user.id, defaultUserFields)
 
     if (!user) throw new ApiError(httpStatus.UNAUTHORIZED, 'User not found')
 

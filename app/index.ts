@@ -27,6 +27,7 @@ app.use(
 )
 
 app.use(passport.initialize())
+app.use(passport.session())
 
 app.get('/', (_, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, 'public') })
