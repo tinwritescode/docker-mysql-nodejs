@@ -11,6 +11,13 @@
 
 ```jsx
 docker-compose up --force-recreate --build -d
+
+
+# dump
+docker exec mysql-nodejs /usr/bin/mysqldump -u root --password=123456 nodejs > backup.sql
+
+# import sql file
+docker exec -i mysql-nodejs mysql -h127.0.0.1 -uroot -p123456 mysql < ./prisma/sakila-mysql.sql
 ```
 
 Chạy MySQL

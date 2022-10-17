@@ -7,7 +7,15 @@ export const validate = (schema: yup.ObjectSchema<any>) => async (
   next: NextFunction,
 ) => {
   try {
-    await schema.validate(req.body, { abortEarly: false })
+    await schema.validate(
+      {
+        body: req.body,
+        query: req.query,
+        params: req.params,
+      },
+      { abortEarly: false },
+    )
+
     return next()
   } catch (error) {
     return res.status(400).json({
