@@ -69,11 +69,6 @@ function html({
       </td>
     </tr>
     <tr>
-      <td align="center" style="padding: 18px 0px 0px 0px; font-size: 60px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
-        ${token}
-      </td>
-    </tr>
-    <tr>
       <td align="center" style="padding: 20px 0;">
         <table border="0" cellspacing="0" cellpadding="0">
           <tr>

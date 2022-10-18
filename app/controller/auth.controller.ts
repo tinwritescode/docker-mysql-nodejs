@@ -1,3 +1,5 @@
+import { hashPassword } from './../base/utils/passwordHashing'
+import { generateResetPasswordToken } from './../service/token.service'
 import {
   createUserWithEmail,
   deleteUserById,
@@ -100,6 +102,89 @@ export const postVerifyEmail = catchAsync(
         password: req.body.password,
         name: req.body.name,
         isEmailVerified: true,
+      },
+      select: excludeFields(Prisma.UserScalarFieldEnum, ['password']),
+    })
+
+    await prisma.token.update({
+      where: {
+        id: token.id,
+      },
+      data: {
+        blacklisted: true,
+      },
+    })
+
+    res.status(httpStatus.OK).json({ ok: true, data: user })
+  },
+)
+
+export const postForgotPassword = catchAsync(
+  async (req: Request, res: BaseResponse, next: NextFunction) => {
+    const user = await getUserByEmail(req.body.email)
+
+    if (!user) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Email is not registered')
+    }
+
+    const recentlyToken = await prisma.token.findFirst({
+      where: {
+        userId: user.id,
+        type: 'RESET_PASSWORD',
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    if (recentlyToken) {
+      const diff = moment().diff(moment(recentlyToken.createdAt), 'minutes')
+
+      if (diff < config.jwt.resetPasswordExpirationMinutes) {
+        throw new ApiError(
+          httpStatus.UNAUTHORIZED,
+          'Please wait before requesting a new password',
+        )
+      }
+    }
+
+    const token = await generateResetPasswordToken(req.body.email)
+    await sendVerificationRequest({
+      identifier: req.body.email,
+      token,
+      url: `http://localhost:3000/reset-password?token=${token}`,
+    })
+
+    res.status(httpStatus.OK).json({ ok: true, message: 'Check your email' })
+  },
+)
+
+export const postVerifyForgotPassword = catchAsync(
+  async (req: Request, res: BaseResponse, next: NextFunction) => {
+    const token = await prisma.token.findFirst({
+      where: {
+        token: req.body.token,
+      },
+    })
+
+    if (!token || token.blacklisted) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid token')
+    }
+
+    const now = moment()
+    const tokenExpiresAt = moment(token.expiresAt)
+    const diff = now.diff(tokenExpiresAt, 'minutes')
+
+    if (diff > 0) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'Token is expired')
+    }
+
+    const user = await prisma.user.update({
+      where: {
+        id: token.userId,
+      },
+      data: {
+        password: await hashPassword(req.body.password),
       },
       select: excludeFields(Prisma.UserScalarFieldEnum, ['password']),
     })

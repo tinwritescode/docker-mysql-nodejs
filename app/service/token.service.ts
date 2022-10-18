@@ -95,7 +95,7 @@ export const generateAuthTokens = async (user: User) => {
   }
 }
 
-const generateResetPasswordToken = async (email: any) => {
+export const generateResetPasswordToken = async (email: string) => {
   const user = await userService.getUserByEmail(email)
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email')
