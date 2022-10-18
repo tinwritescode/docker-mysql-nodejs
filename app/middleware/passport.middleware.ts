@@ -7,7 +7,7 @@ import {
 import passport from 'passport'
 import { Strategy as FacebookStrategy } from 'passport-facebook'
 import FacebookTokenStrategy from 'passport-facebook-token'
-import { prisma } from '../lib/prisma'
+import { Strategy as GoogleTokenStrategy } from 'passport-google-verify-token'
 import { User } from '@prisma/client'
 
 const facebookStrategy = new FacebookStrategy(
@@ -69,6 +69,38 @@ const facebookTokenStrategy = new FacebookTokenStrategy(
   },
 )
 
+const googleTokenStrategy = new GoogleTokenStrategy(
+  {
+    clientID: process.env.GOOGLE_CLIENT_ID as string,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    callbackURL: '/oauth2/redirect/google',
+    scope: ['profile'],
+    state: true,
+  },
+  async (parsedToken, googleId, done) => {
+    console.log('hi from google token strategy', parsedToken, googleId, done)
+    // if (profile.emails) {
+    //   const email = profile.emails[0].value
+    //   const user = await getUserByEmail(email)
+
+    //   if (user) {
+    //     return done(null, user)
+    //   }
+
+    //   const newUser = await createUserWithEmail(email)
+
+    //   await updateUserById(newUser.id, {
+    //     googleId: profile.id,
+    //     name: profile.displayName,
+    //   })
+
+    //   return done(null, newUser)
+    // }
+
+    return done(null)
+  },
+)
+
 // @ts-ignore
 passport.serializeUser((user: User, done) => {
   done(null, user.id)
@@ -82,5 +114,6 @@ passport.deserializeUser(async (id, done) => {
 
 passport.use('facebook', facebookStrategy)
 passport.use('facebook-token', facebookTokenStrategy)
+passport.use('google-token', googleTokenStrategy)
 
 export default passport

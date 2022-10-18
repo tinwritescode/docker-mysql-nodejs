@@ -37,6 +37,11 @@ router.get(
   passport.authenticate('facebook-token'),
   getLoginFacebook,
 )
+router.get(
+  '/google/token/callback',
+  passport.authenticate('google-token'),
+  getLoginFacebook,
+)
 
 /**
  * @swagger
@@ -283,6 +288,38 @@ router.get(
  *                   type: boolean
  *                 message:
  *                   type: string
+ */
+
+/**
+ * @swagger
+ * /auth/google/token/callback:
+ *   get:
+ *     summary: Login with google token callback
+ *     tags: [Auth]
+ *   parameters:
+ *     - in: query
+ *       name: access_token
+ *       schema:
+ *         type: string
+ *       required: true
+ *       description: The access token
+ *   responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ok:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     token:
+ *                       type: string
  */
 
 export default router
