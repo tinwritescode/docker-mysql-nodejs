@@ -1,9 +1,9 @@
-import { getActor, postActor } from './../controller/actor.controller'
-import { validate } from '../validation/index'
-import { Router } from 'express'
-import { postActorValidation } from '../validation/actor.validation'
+import { getActor, postActor } from "./../controller/actor.controller";
+import { validateBody } from "../validation/index";
+import { Router } from "express";
+import { postActorValidation } from "../validation/actor.validation";
 
-const router = Router()
+const router = Router();
 
 /**
  * @swagger
@@ -55,7 +55,7 @@ const router = Router()
  *                   items:
  *                     $ref: '#/definitions/Actor'
  */
-router.get('/', getActor)
+router.get("/", getActor);
 
 /**
  * @swagger
@@ -77,6 +77,6 @@ router.get('/', getActor)
  *           schema:
  *             $ref: '#/definitions/Actor'
  */
-router.post('/', validate(postActorValidation), postActor)
+router.post("/", validateBody(postActorValidation), postActor);
 
-export default router
+export default router;
